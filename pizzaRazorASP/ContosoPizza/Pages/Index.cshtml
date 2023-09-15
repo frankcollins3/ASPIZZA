@@ -1,10 +1,51 @@
-﻿@page
+@page
 @model IndexModel
+
+                                    @* <!--    @ { } this is C# code! STATIC! You cannot change these variables, unlike GetServersideProps --> *@
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Pizza Party";
+    TimeSpan timeInBusiness = DateTime.Now - new DateTime(2018, 8, 14);
+    string favoritePizza = "cheese";
+    string[] pizzaArray = { "cheese", "pepperoni", "sausage" };
+    Random rando = new Random();
+    int randomIndex = rando.Next(0, pizzaArray.Length);
+    string randomPizza = pizzaArray[randomIndex];
 }
 
+<style>
+    .text-center { background-color:  blanchedalmond; }
+
+    .display-4 {
+        font-size: 45px; 
+        color: hotpink;
+        min-height: 50vh;
+        min-width: 50vw;
+        color: #B49D17;
+    }   
+
+    #pizzaBtn {
+        background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2UsJuDokcgtN9hU3AOBuEdeSvoFgJqW2Hvq5qnRwKNmdBnTYRqP6AxD7w50T2olELzxM&usqp=CAU);
+        height: 125px;
+        width: 125px;
+    }
+    #pizzaBtn:hover { cursor: pointer; }
+
+</style>
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Pizza Party</h1>
+    @* <p> <a href="https://docs.microsoft.com/aspnet/core">Or a Pizza Party!</a>.</p> *@
+    <button onclick={pizzaClick()} id="pizzaBtn"> </button>
+    <p class="lead" > The best pizza in town for @Convert.ToInt32(timeInBusiness.TotalDays) days! </p>
+    <pre id="favoritePizzaTxt"> I hope everyone enjoys a @favoritePizza pizza from time to time. </pre>
 </div>
+
+
+<script>
+    const pizzaClick = () => {
+        console.log("hey were clicking!");
+
+        let pizzaText = document.querySelector('#favoritePizzaTxt');
+        pizzaText.textContent = "Everyone likes " + @Html.Raw(Json.Serialize(randomPizza));
+    }
+</script>

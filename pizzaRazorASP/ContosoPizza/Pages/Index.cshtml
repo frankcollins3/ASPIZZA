@@ -6,10 +6,8 @@
     ViewData["Title"] = "Pizza Party";
     TimeSpan timeInBusiness = DateTime.Now - new DateTime(2018, 8, 14);
     string favoritePizza = "cheese";
-    string[] pizzaArray = { "cheese", "pepperoni", "sausage" };
-    Random rando = new Random();
-    int randomIndex = rando.Next(0, pizzaArray.Length);
-    string randomPizza = pizzaArray[randomIndex];
+    string[] pizzaArray = { "cheese", "pepperoni", "sausage" };   
+
 }
 
 <style>
@@ -37,15 +35,51 @@
     @* <p> <a href="https://docs.microsoft.com/aspnet/core">Or a Pizza Party!</a>.</p> *@
     <button onclick={pizzaClick()} id="pizzaBtn"> </button>
     <p class="lead" > The best pizza in town for @Convert.ToInt32(timeInBusiness.TotalDays) days! </p>
-    <pre id="favoritePizzaTxt"> I hope everyone enjoys a @favoritePizza pizza from time to time. </pre>
+    @* <p> Here is a nice @randomPizzaFunc() </p> *@
+    @* <p> @randomPizza() ... @lovepizza() </p> *@
+    <pre id="favoritePizzaTxt"> Yh </pre>
 </div>
+
+@functions {
+    string randomPizzaFunc()
+    {
+        string[] localPizzaArray = { "cheese", "pepperoni", "sausage" };
+        Random rando = new Random();
+        int randomIndex = rando.Next(0, localPizzaArray.Length);
+        string randomPizza = localPizzaArray[randomIndex];
+        return randomPizza;
+    }
+}
 
 
 <script>
     const pizzaClick = () => {
         console.log("hey were clicking!");
+        console.log("yeah hey whatsup");
+    
+        let pizzaArrJS = @Html.Raw(Json.Serialize(pizzaArray));
+        let preText = ['lets do', 'oh wait how bout', 'maybe', 'but i like', "well there's:"];
 
-        let pizzaText = document.querySelector('#favoritePizzaTxt');
-        pizzaText.textContent = "Everyone likes " + @Html.Raw(Json.Serialize(randomPizza));
+        const returnRandom = (array) => {
+            let randomValue = array[Math.floor(Math.random() * array.length)];
+            return randomValue
+        }
+
+        let randomPizzaJS = pizzaArrJS[Math.floor(Math.random() * pizzaArrJS.length)];
+        let randomPreText = returnRandom(preText);
+        let random = returnRandom(pizzaArrJS);
+        let randomString = `${randomPreText} ${random}`;
+        console.log(randomString);
+        const txtElem = document.querySelector("#favoritePizzaTxt");
+        txtElem.textContent = randomString;
+
+        
+        
+
+        
+
+
     }
 </script>
+
+
